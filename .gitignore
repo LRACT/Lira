@@ -1,0 +1,4 @@
+__pycache__
+discord.sqlite
+*.zip
+*.bat
