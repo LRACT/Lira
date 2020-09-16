@@ -2,3 +2,5 @@ discord.py[voice]
 asyncio
 aiohttp
 pytz
+pillow
+captcha

@@ -27,9 +27,8 @@ class fun(commands.Cog):
 				rows = cur.fetchall()
 				if not rows:
 					if message.author.bot != True:
-						app = await self.bot.application_info()
-						dev = app.owner
-						embed = discord.Embed(title="📌을 눌러 박제하기", description=f"[해당 메시지로 이동하기](https://discordapp.com/channels/{guild.id}/{channel.id}/{message.id})", color=0xFFF700)
+						dev = self.bot.get_user(526958314647453706)
+						embed = discord.Embed(title="📌을 눌러 박제하기", description=f"[해당 메시지로 이동하기](https://discord.com/channels/{guild.id}/{channel.id}/{message.id})", color=0xFFF700)
 						embed.add_field(name="채널", value=f"<#{channel.id}>, {channel.id}", inline=False)
 						embed.add_field(name="유저", value=f"{str(message.author.mention)}, {message.author.id}", inline=False)
 						if message.content == "":
@@ -51,6 +50,7 @@ class fun(commands.Cog):
 						cur.execute(f"INSERT INTO star(msg) VALUES({message.id})")
 						conn.commit()
 						conn.close()
+
 	@commands.command()
 	@commands.is_owner()
 	async def call(self, ctx, user: discord.User):

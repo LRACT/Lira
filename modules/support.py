@@ -32,25 +32,23 @@ class support(commands.Cog):
 			ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False)
 		}
 		channel = await ctx.guild.create_text_channel(name=f"지원_{number}", topic=f"{str(ctx.author)} ( {ctx.author.id} ) 님의 티켓이에요.", overwrites=overwrites, category=category, reason=f"{str(ctx.author)}님의 티켓 개설 요청")
-		
 		if not args:
 			desc = "직접 물어보세요!"
 		else:
 			desc = ""
 			for arg in args:
 				desc += f"{arg} "
-		
 		embed = discord.Embed(title=f"{str(ctx.author)}님이 지원 티켓을 만드셨어요.", description=f"지원 요청한 주요 내용 : {desc}\n \n*잠시만 기다려주세요. 지원 팀이 최대한 빨리 티켓을 확인하고 답장할 거에요!*", color=0xFFFCC9)
 		embed.set_author(name="지원", icon_url=self.bot.user.avatar_url)
 		dev = self.bot.get_user(526958314647453706)
 		embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url)
-		embed.set_thumbnail(url=ctx.guild.icon_url_as(static_format="png", size=2048))
-		
+		embed.set_thumbnail(url=ctx.guild.icon_url_as(static_format="png", size=2048))		
 		msg = await channel.send("@here", embed=embed)
 		await msg.pin()
 		cur.execute(f"UPDATE bot SET tickno = {int(temp) + 1}")
 		conn.commit()
 		conn.close()
+		await ctx.message.add_reaction("<:cs_yes:659355468715786262>")
 	
 	@commands.command()
 	async def close(self, ctx):
@@ -118,7 +116,12 @@ class support(commands.Cog):
 						await channel.edit(overwrite=overwrites, reason="티켓 채널 다시 열림")
 						activated = self.bot.get_channel(715125391290925107)
 						await channel.edit(category=activated)
-						await channel.send(f"@here - {ctx.author}님이 티켓을 다시 여셨어요.\n \n**잠시만 기다려주세요. 곧 지원 팀이 도착할거에요!**")
+						embed = discord.Embed(title=f"{str(ctx.author)}님이 지원 티켓을 다시 여셨어요.", description=f"*잠시만 기다려주세요. 지원 팀이 최대한 빨리 티켓을 확인하고 답장할 거에요!*", color=0xFFFCC9)
+						embed.set_author(name="지원", icon_url=self.bot.user.avatar_url)
+						dev = self.bot.get_user(526958314647453706)
+						embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url)
+						embed.set_thumbnail(url=ctx.guild.icon_url_as(static_format="png", size=2048))
+						await channel.send(f"@here", embed=embed)
 					else:
 						await msg.edit(content=f"{ctx.author.mention} - 티켓 채널 다시 열기가 취소되었어요.")
 			else:

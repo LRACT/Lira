@@ -33,7 +33,7 @@ class moderation(commands.Cog):
 			await ctx.message.delete()
 			await ctx.send(ctx.author.mention, embed=embed)
 		else:
-			embed = discord.Embed(description="관리자 및 서버 관리 봇에게 경고를 줄 수 없어요!", color=0xFF5F5F)
+			embed = discord.Embed(description="해당 기능은 관리자에게 실행할 수 없어요.", color=0xFF5F5F)
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
 			await ctx.send(ctx.author.mention, embed=embed)
@@ -83,7 +83,7 @@ class moderation(commands.Cog):
 			await ctx.message.delete()
 			await ctx.send(ctx.author.mention, embed=embed)
 		else:
-			embed = discord.Embed(description="관리자 및 서버 관리 봇을 서버에서 추방할 수 없어요!", color=0xFF5F5F)
+			embed = discord.Embed(description="해당 기능은 관리자에게 실행할 수 없어요.", color=0xFF5F5F)
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
 			await ctx.send(ctx.author.mention, embed=embed)
@@ -140,7 +140,7 @@ class moderation(commands.Cog):
 			await ctx.message.delete()
 			await ctx.send(ctx.author.mention, embed=embed)
 		else:
-			embed = discord.Embed(description="관리자 및 서버 관리 봇을 서버에서 차단할 수 없어요!", color=0xFF5F5F)
+			embed = discord.Embed(description="해당 기능은 관리자에게 실행할 수 없어요.", color=0xFF5F5F)
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
 			await ctx.send(ctx.author.mention, embed=embed)
@@ -198,7 +198,7 @@ class moderation(commands.Cog):
 				embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
 				await ctx.send(ctx.author.mention, embed=embed)
 		else:
-			embed = discord.Embed(description="관리자 및 서버 관리 봇의 채팅을 제한할 수 없어요!", color=0xFF5F5F)
+			embed = discord.Embed(description="해당 기능은 관리자에게 실행할 수 없어요.", color=0xFF5F5F)
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
 			await ctx.send(ctx.author.mention, embed=embed)
