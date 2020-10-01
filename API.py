@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import config
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("r."), description="리라(이트)")
 bot.remove_command('help')
@@ -40,4 +41,4 @@ async def on_message(msg):
 				await msg.channel.send(f"<:cs_trash:659355468631769101> {msg.author.mention} - 승인되지 않은 링크 업로드 감지, 링크 업로드 관련은 관리자에게 문의해주세요.")
 		
 
-bot.run("Token")
+bot.run(config.Token)

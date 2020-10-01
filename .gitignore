@@ -1,4 +1,5 @@
 __pycache__
 discord.sqlite
 *.zip
-API.py
+temp
+config.py
