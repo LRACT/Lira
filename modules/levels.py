@@ -29,7 +29,7 @@ class level(commands.Cog):
 				cur.execute(f"INSERT INTO rank(user, exp, level, next, cooldown) VALUES({msg.author.id}, {add}, 0, 300, 'true')")
 				conn.commit()
 				conn.close()
-				await asyncio.sleep(60)
+				await asyncio.sleep(30)
 				conn = sqlite3.connect('discord.sqlite')
 				cur = conn.cursor()
 				cur.execute(f"UPDATE rank SET cooldown = 'false' WHERE user = {msg.author.id}")

@@ -73,7 +73,7 @@ class default(commands.Cog):
 		embed.add_field(name="r.help", value="봇의 도움말을 전송해요.", inline=False)
 		embed.add_field(name="r.ping", value="퐁! 봇의 응답 지연 시간을 전송해요.", inline=False)
 		embed.add_field(name="r.avatar [ @유저 ]", value="지정한 유저 ( 혹은 본인 )의 아바타( 프로필 사진 )를 불러와요.", inline=False)
-		embed.add_field(name="r.infractions < @유저 >", value="지정한 유저의 경고 기록을 불러와요.", inline=False)
+		embed.add_field(name="r.warns < @유저 >", value="지정한 유저의 경고 기록을 불러와요.", inline=False)
 		embed.add_field(name="r.rank [ @유저 ]", value="지정한 유저 ( 혹은 본인 )의 경험치 정보를 불러와요.")
 		embed.add_field(name="r.new [ 문의 내용 ]", value="지원 티켓 채널을 생성해요.", inline=False)
 		embed.add_field(name="r.open < 채널 ID >", value="비활성화된 지원 티켓 채널을 다시 열어요.", inline=False)

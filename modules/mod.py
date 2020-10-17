@@ -19,8 +19,8 @@ class moderation(commands.Cog):
 			cur.execute(f"INSERT INTO infractions(user, reason) VALUES({member.id}, '{reason}')")
 			conn.commit()
 			conn.close()
-			embed = discord.Embed(description=f"사유 : {reason}", color=0xFFFCC9)
-			embed.set_author(name=f"{str(member)}님이 관리자에게 경고 받으셨어요.", icon_url=member.avatar_url_as(static_format='png', size=2048))
+			embed = discord.Embed(description=f"사유 : {reason}", color=0x5AFF53)
+			embed.set_author(name=f"{str(member)}님이 관리자에게 경고를 받으셨어요.", icon_url=member.avatar_url_as(static_format='png', size=2048))
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
 		else:
@@ -29,7 +29,7 @@ class moderation(commands.Cog):
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
 		await ctx.send(embed=embed)
 	
-	@commands.command()
+	@commands.command(aliases=["warns"])
 	async def infractions(self, ctx, member: discord.Member):
 		conn = sqlite3.connect('discord.sqlite')
 		cur = conn.cursor()
@@ -59,7 +59,7 @@ class moderation(commands.Cog):
 		role = discord.utils.get(ctx.guild.roles, id=711753639722745896)
 		if role not in member.roles:
 			await ctx.guild.kick(member, reason=reason)
-			embed = discord.Embed(description=f"사유 : {reason}", color=0xAFFDEF)
+			embed = discord.Embed(description=f"사유 : {reason}", color=0x5AFF53)
 			embed.set_author(name=f"{str(member)}님을 서버에서 추방했어요.", icon_url=member.avatar_url_as(static_format='png', size=2048))
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
@@ -104,7 +104,7 @@ class moderation(commands.Cog):
 		role = discord.utils.get(ctx.guild.roles, id=711753639722745896)
 		if role not in member.roles:
 			await ctx.guild.ban(member, delete_message_days=delete, reason=reason)
-			embed = discord.Embed(description=f"사유 : {reason}, {delete}일 간의 메시지가 삭제되었어요.", color=0xC0FA1B)
+			embed = discord.Embed(description=f"사유 : {reason}, {delete}일 간의 메시지가 삭제되었어요.", color=0x5AFF53)
 			embed.set_author(name=f"{str(member)}님을 서버에서 영구적으로 차단했어요.", icon_url=member.avatar_url_as(static_format='png', size=2048))
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
@@ -131,9 +131,9 @@ class moderation(commands.Cog):
 			muted = discord.utils.get(ctx.guild.roles, id=712106679331717141)
 			if muted not in member.roles:
 				if timeout == 0:
-					embed = discord.Embed(description=f"사유 : {reason}\n타임아웃 시간 : 영구적!", color=0xFFFCC9)
+					embed = discord.Embed(description=f"사유 : {reason}\n타임아웃 시간 : 영구적!", color=0x5AFF53)
 				else:
-					embed = discord.Embed(description=f"사유 : {reason}\n타임아웃 시간 : `{timeout}`초\n \n*주의하세요! 뮤트 중에 봇이 재시작되면 타임아웃이 만료되어요.*", color=0xFFFCC9)
+					embed = discord.Embed(description=f"사유 : {reason}\n타임아웃 시간 : `{timeout}`초\n \n*주의하세요! 뮤트 중에 봇이 재시작되면 타임아웃이 만료되어요.*", color=0x5AFF53)
 				await member.add_roles(muted, reason=reason)
 				embed.set_author(name=f"{str(member)}님의 채팅을 차단했어요.", icon_url=member.avatar_url_as(static_format='png', size=2048))
 				dev = self.bot.get_user(526958314647453706)
@@ -141,7 +141,7 @@ class moderation(commands.Cog):
 				if timeout != 0:
 					await asyncio.sleep(timeout)
 					await member.remove_roles(muted, reason="타임아웃 시간 종료")
-					embed = discord.Embed(description=f"사유 : 타임아웃 시간 종료", color=0xC0FA1B)
+					embed = discord.Embed(description=f"사유 : 타임아웃 시간 종료", color=0x5AFF53)
 					embed.set_author(name=f"{str(member)}님의 채팅 금지 조치를 해제했어요.", icon_url=member.avatar_url_as(static_format='png', size=2048))
 					dev = self.bot.get_user(526958314647453706)
 					embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
@@ -162,7 +162,7 @@ class moderation(commands.Cog):
 		muted = discord.utils.get(ctx.guild.roles, id=712106679331717141)
 		if muted in member.roles:
 			await member.remove_roles(muted, reason=reason)
-			embed = discord.Embed(description=f"사유 : {reason}", color=0xC0FA1B)
+			embed = discord.Embed(description=f"사유 : {reason}", color=0x5AFF53)
 			embed.set_author(name=f"{str(member)}님의 채팅 금지 조치를 해제했어요.", icon_url=member.avatar_url_as(static_format='png', size=2048))
 			dev = self.bot.get_user(526958314647453706)
 			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
