@@ -13,6 +13,7 @@ class moderation(commands.Cog):
 	async def warn(self, ctx, member: discord.Member, *, reason: typing.Optional[str] = "사유 없음."):
 		await ctx.message.delete()
 		role = discord.utils.get(ctx.guild.roles, id=711753639722745896)
+		embed = None
 		if role not in member.roles:
 			conn = sqlite3.connect('discord.sqlite')
 			cur = conn.cursor()
@@ -31,6 +32,7 @@ class moderation(commands.Cog):
 	
 	@commands.command(aliases=["warns"])
 	async def infractions(self, ctx, member: discord.Member):
+		embed = None
 		conn = sqlite3.connect('discord.sqlite')
 		cur = conn.cursor()
 		cur.execute(f"SELECT * FROM infractions WHERE user = {member.id}")
@@ -57,6 +59,7 @@ class moderation(commands.Cog):
 	async def kick(self, ctx, member: discord.Member, *, reason: typing.Optional[str] = "사유 없음."):
 		await ctx.message.delete()
 		role = discord.utils.get(ctx.guild.roles, id=711753639722745896)
+		embed = None
 		if role not in member.roles:
 			await ctx.guild.kick(member, reason=reason)
 			embed = discord.Embed(description=f"사유 : {reason}", color=0x5AFF53)
@@ -102,6 +105,7 @@ class moderation(commands.Cog):
 	async def ban(self, ctx, member: discord.Member, delete: typing.Optional[int] = 0, *, reason: typing.Optional[str] = "사유 없음."):
 		await ctx.message.delete()
 		role = discord.utils.get(ctx.guild.roles, id=711753639722745896)
+		embed = None
 		if role not in member.roles:
 			await ctx.guild.ban(member, delete_message_days=delete, reason=reason)
 			embed = discord.Embed(description=f"사유 : {reason}, {delete}일 간의 메시지가 삭제되었어요.", color=0x5AFF53)
@@ -127,6 +131,7 @@ class moderation(commands.Cog):
 	async def mute(self, ctx, member: discord.Member, timeout: typing.Optional[int] = 0, *, reason: typing.Optional[str] = "사유 없음."):
 		await ctx.message.delete()
 		role = discord.utils.get(ctx.guild.roles, id=711753639722745896)
+		embed = None
 		if role not in member.roles:
 			muted = discord.utils.get(ctx.guild.roles, id=712106679331717141)
 			if muted not in member.roles:
@@ -160,6 +165,7 @@ class moderation(commands.Cog):
 	async def unmute(self, ctx, member: discord.Member, *, reason: typing.Optional[str] = "사유 없음."):
 		await ctx.message.delete()
 		muted = discord.utils.get(ctx.guild.roles, id=712106679331717141)
+		embed = None
 		if muted in member.roles:
 			await member.remove_roles(muted, reason=reason)
 			embed = discord.Embed(description=f"사유 : {reason}", color=0x5AFF53)
