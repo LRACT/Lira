@@ -50,12 +50,10 @@ class events(commands.Cog):
 				bot_role = discord.utils.get(member.guild.roles, id=711775686678937651)
 				await member.add_roles(bot_role)
 			else:
-				#human_role = discord.utils.get(member.guild.roles, id=728488298062020609)
-				#await member.add_roles(human_role)
 				channel = self.bot.get_channel(711748833402552320)
 				await channel.send(f"{member.mention}님이 **{member.guild.name}** 서버에 등장했어요! ㄷㄷㄷㅈ")
 				try:
-					embed = discord.Embed(description=f"{member.mention}님 어서오세요! **{member.guild.name}** 서버에 오신 것을 환영해요!\n이 서버는 개발자분들과 함께 소통하고, 자신이 막힌 코드에 대해서 질문하실 수 있어요.\n앗, 서버에 대한 문의(Ex: 파트너, 유저 신고 등)를 하고 싶으신가요? <#712260887167107074> 채널에서 `r.new` 명령어를 사용해주세요!", color=0xFFFCC9)
+					embed = discord.Embed(description=f"{member.mention}님 어서오세요! **{member.guild.name}** 서버에 오신 것을 환영해요!\n이 서버는 개발자분들과 함께 소통하고, 자신이 막힌 코드에 대해서 질문하실 수 있어요.\n앗, 서버에 대한 문의(Ex: 배너, 유저 신고 등)를 하고 싶으신가요? <#712260887167107074> 채널에서 `r.new` 명령어를 사용해주세요!", color=0xFFFCC9)
 					dev = self.bot.get_user(526958314647453706)
 					embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url)
 					embed.set_author(name="어서오세요!", icon_url=self.bot.user.avatar_url)
@@ -98,6 +96,48 @@ class events(commands.Cog):
 				member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
 				if member is not None:
 					await member.add_roles(role)
+		else:			
+			if str(payload.emoji) == '📌':
+				guild = self.bot.get_guild(payload.guild_id)
+				dest = self.bot.get_channel(711809313064222811)
+				channel = self.bot.get_channel(payload.channel_id)
+				message = await channel.fetch_message(payload.message_id)
+				user = payload.member
+				role = discord.utils.get(guild.roles, id=711753639722745896)
+				if role in user.roles:
+					count = 2
+				else:
+					count = 2
+				if message.reactions[0].count >= count:
+					conn = sqlite3.connect('discord.sqlite')
+					cur = conn.cursor()
+					cur.execute(f"SELECT * FROM star WHERE msg = {message.id}")
+					rows = cur.fetchall()
+					if not rows:
+						if message.author.bot != True:
+							dev = self.bot.get_user(526958314647453706)
+							embed = discord.Embed(title="📌을 눌러 박제하기", description=f"[해당 메시지로 이동하기](https://discord.com/channels/{guild.id}/{channel.id}/{message.id})", color=0xFFF700)
+							embed.add_field(name="채널", value=f"<#{channel.id}>, {channel.id}", inline=False)
+							embed.add_field(name="유저", value=f"{str(message.author.mention)}, {message.author.id}", inline=False)
+							if message.content == "":
+								embed.add_field(name="메시지 내용", value="메시지 내용이 없습니다.", inline=False)
+							else:
+								embed.add_field(name="메시지 내용", value=message.content, inline=False)
+							embed.set_author(name="스타보드", icon_url=self.bot.user.avatar_url_as(static_format='png', size=2048))
+							embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))	
+							if message.attachments:
+								att = message.attachments[0]
+								if att.filename.endswith('.png') or att.filename.endswith('.jpg') or att.filename.endswith('.gif') or att.filename.endswith('.PNG') or att.filename.endswith('.JPG') or att.filename.endswith('.GIF'):
+									aaa = await att.to_file()
+									msg = await self.bot.get_channel(711823152002629653).send(file=aaa)
+									image = msg.attachments[0].url
+									embed.set_image(url=image)
+								else:
+									embed.add_field(name='파일', value=f'[맨 앞의 파일]({att.url})')
+							await dest.send(embed=embed)
+							cur.execute(f"INSERT INTO star(msg) VALUES({message.id})")
+							conn.commit()
+							conn.close()
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_remove(self, payload):
@@ -151,35 +191,6 @@ class events(commands.Cog):
 			embed.set_footer(text=f"Powered by {dev.name}#{dev.discriminator}", icon_url=dev.avatar_url_as(static_format="png", size=2048))
 			embed.set_thumbnail(url=ctx.author.avatar_url_as(static_format="png", size=2048))
 			await ctx.send(embed=embed)
-
-#	@commands.Cog.listener()
-#	async def on_message(self, msg):
-#		if msg.author.bot:
-#			return
-
-#		if msg.channel.type == discord.ChannelType.private:
-#			KST = timezone('Asia/Seoul')
-#			now = datetime.datetime.utcnow()
-#			time = utc.localize(now).astimezone(KST)
-#			embed = discord.Embed(title="문의해주셔서 감사해요!", description="문의하신 내용은 아래와 같아요.", color=0xAFFDEF, timestamp=msg.created_at)
-#			embed.add_field(name="문의 내용", value=msg.content, inline=False)
-#			embed.add_field(name="문의하신 시간", value=time.strftime("%Y년 %m월 %d일 %H시 %M분 %S초"), inline=False)
-#			embed.set_author(name="모드메일", icon_url=self.bot.user.avatar_url_as(static_format='png', size=2048))
-#			dev = self.bot.get_user(526958314647453706)
-#			guild = self.bot.get_guild(702880464893116518)
-#			embed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
-#			embed.set_thumbnail(url=guild.icon_url_as(static_format='png', size=2048))
-#			await msg.channel.send(msg.author.mention, embed=embed, delete_after=20)
-#			sembed = discord.Embed(title="새 문의가 도착했어요!", description=f"{msg.author.mention} ( {msg.author.id} )", color=0xAFFDEF, timestamp=msg.created_at)
-#			sembed.add_field(name="문의 내용", value=msg.content, inline=False)
-#			sembed.add_field(name="문의가 들어온 시간", value=time.strftime("%Y년 %m월 %d일 %H시 %M분 %S초"), inline=False)
-#			sembed.set_author(name="모드메일", icon_url=self.bot.user.avatar_url_as(static_format='png', size=2048))
-#			dev = self.bot.get_user(526958314647453706)
-#			guild = self.bot.get_guild(702880464893116518)
-#			sembed.set_footer(text=f"Powered by {str(dev)}", icon_url=dev.avatar_url_as(static_format='png', size=2048))
-#			sembed.set_thumbnail(url=guild.icon_url_as(static_format='png', size=2048))
-#			channel = self.bot.get_channel(712884827912667227)
-#			await channel.send("<@&711753639722745896>", embed=sembed)
 
 def setup(bot):
 	bot.add_cog(events(bot))
